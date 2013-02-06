@@ -3,4 +3,14 @@ tests are in the "UnitTests" folder.
 
 For more details, see the "README" file in each of those folders.
 
-Note: to build, you must first run lombok.jar with sufficient privileges in order to initialize it. This can be done from this directory via the command `java -jar lib/lombok.jar`
+DEPENDENCIES
+
+* Lombok
+  To build, you must first run lombok.jar with sufficient privileges in order to
+  initialize it. This can be done from this directory via the command
+
+    `java -jar lib/lombok.jar`
+* TestNG
+  Running TestNG through the Eclipse plug-in is recommended. Instructions can
+  be found on the TestNG site: http://testng.org/doc/download.html
+
