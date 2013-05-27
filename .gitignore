@@ -1,4 +1,9 @@
+lib
 bin
 deploy
 deploy/*
 test-output
+target
+src-old
+src-delombok-wrong
+.settings
