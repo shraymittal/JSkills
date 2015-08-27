@@ -3,11 +3,11 @@ package jskills.trueskill;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
+@Test
 public class DrawMarginTest {
 
     private static final double ErrorTolerance = .000001;
 
-    @Test
     public void GetDrawMarginFromDrawProbabilityTest() {
         double beta = 25.0 / 6.0;
         // The expected values were compared against Ralf Herbrich's implementation in F#

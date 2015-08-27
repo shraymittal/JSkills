@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+@Test
 public class RankSorterTest {
-    @Test
     public void sortAlreadySortedTest() {
         List<String> people = Arrays.asList(new String[] { "One", "Two", "Three" });
         int[] ranks = new int[] { 1, 2, 3 },
@@ -25,7 +25,6 @@ public class RankSorterTest {
         assertEquals(people, Arrays.asList(new String[] { "One", "Two", "Three" }));
     }
 
-    @Test
     public void sortUnsortedTest() {
         List<String> people = Arrays.asList(new String[] { "Five", "Two1", "Two2", "One", "Four" });
         int[] ranks = new int[] { 5, 2, 2, 1, 4 },

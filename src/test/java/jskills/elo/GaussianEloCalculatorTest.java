@@ -1,12 +1,12 @@
 package jskills.elo;
 
-import static jskills.elo.EloAssert.assertChessRating;
 import jskills.PairwiseComparison;
-
 import org.testng.annotations.Test;
 
+import static jskills.elo.EloAssert.assertChessRating;
+
+@Test
 public class GaussianEloCalculatorTest {
-    @Test
     public void gaussianEloCalculatorTests() {
         final double defaultKFactor = 24.0;
         GaussianEloCalculator calc = new GaussianEloCalculator();

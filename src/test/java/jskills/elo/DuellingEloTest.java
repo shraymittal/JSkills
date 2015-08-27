@@ -1,25 +1,19 @@
 package jskills.elo;
 
-import static org.testng.Assert.assertEquals;
-
 import java.util.Collection;
 import java.util.Map;
 
-import jskills.GameInfo;
-import jskills.IPlayer;
-import jskills.ITeam;
-import jskills.Player;
-import jskills.Rating;
-import jskills.Team;
+import static org.testng.Assert.assertEquals;
 
+import jskills.*;
 import org.testng.annotations.Test;
 
+@Test
 public class DuellingEloTest {
     private final static double ErrorTolerance = 0.1;
 
-    @Test
     public void twoOnTwoDuellingTest() {
-        DuellingEloCalculator calculator = new DuellingEloCalculator(new GaussianEloCalculator());
+        jskills.elo.DuellingEloCalculator calculator = new DuellingEloCalculator(new GaussianEloCalculator());
 
         GameInfo gameInfo = GameInfo.getDefaultGameInfo();
 

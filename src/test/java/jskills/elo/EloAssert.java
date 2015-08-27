@@ -12,6 +12,8 @@ import jskills.PairwiseComparison;
 import jskills.Player;
 import jskills.Rating;
 import jskills.Team;
+import jskills.elo.EloRating;
+import jskills.elo.TwoPlayerEloCalculator;
 
 public class EloAssert {
     private static final double ErrorTolerance = 0.1;

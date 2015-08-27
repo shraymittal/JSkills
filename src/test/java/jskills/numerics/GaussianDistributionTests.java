@@ -6,24 +6,22 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
+@Test
 public class GaussianDistributionTests {
     private static final double ErrorTolerance = 0.000001;
 
-    @Test
     public void CumulativeToTests() {
         // Verified with WolframAlpha
         // (e.g. http://www.wolframalpha.com/input/?i=CDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D )
         assertEquals(0.691462, GaussianDistribution.cumulativeTo(0.5), ErrorTolerance);            
     }
 
-    @Test
     public void AtTests() {
         // Verified with WolframAlpha
         // (e.g. http://www.wolframalpha.com/input/?i=PDF%5BNormalDistribution%5B0%2C1%5D%2C+0.5%5D )
         assertEquals(0.352065, GaussianDistribution.at(0.5), ErrorTolerance);
     }
 
-    @Test
     public void MultiplicationTests() {
         // I verified this against the formula at
         // http://www.tina-vision.net/tina-knoppix/tina-memo/2003-003.pdf
@@ -47,7 +45,6 @@ public class GaussianDistributionTests {
         assertEquals(expectedSigma, product2.getStandardDeviation(), ErrorTolerance);
     }
 
-    @Test
     public void DivisionTests() {
         // Since the multiplication was worked out by hand, we use the same
         // numbers but work backwards
@@ -65,7 +62,6 @@ public class GaussianDistributionTests {
         assertEquals(7.0, product2DividedByM4S5.getStandardDeviation(), ErrorTolerance);
     }
 
-    @Test
     public void LogProductNormalizationTests() {
         // Verified with Ralf Herbrich's F# implementation
     	GaussianDistribution standardNormal = new GaussianDistribution(0, 1);
@@ -78,7 +74,6 @@ public class GaussianDistributionTests {
         assertEquals(-2.5168046699816684, lpn2, ErrorTolerance);
     }
 
-    @Test
     public void LogRatioNormalizationTests() {
         // Verified with Ralf Herbrich's F# implementation            
     	GaussianDistribution m1s2 = new GaussianDistribution(1, 2);
@@ -87,7 +82,6 @@ public class GaussianDistributionTests {
         assertEquals(2.6157405972171204, lrn, ErrorTolerance);            
     }
 
-    @Test
     public void AbsoluteDifferenceTests() {
         // Verified with Ralf Herbrich's F# implementation            
     	GaussianDistribution standardNormal = new GaussianDistribution(0, 1);

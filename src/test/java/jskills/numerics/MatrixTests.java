@@ -6,10 +6,10 @@ import static org.testng.Assert.assertTrue;
 import org.ejml.simple.SimpleMatrix;
 import org.testng.annotations.Test;
 
+@Test
 public class MatrixTests {
 	private static double ERROR_TOLERANCE = 0.0000000000001;
 
-	@Test
 	public void TwoByTwoDeterminantTests() {
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 1, 2 }, { 3, 4 } });
 		assertEquals(a.determinant(), -2., ERROR_TOLERANCE);
@@ -24,7 +24,6 @@ public class MatrixTests {
 		assertEquals(d.determinant(), 12 * 21 - 15 * 17, ERROR_TOLERANCE);
 	}
 
-	@Test
 	public void ThreeByThreeDeterminantTests() {
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
 		assertEquals(a.determinant(), 0., ERROR_TOLERANCE);
@@ -36,7 +35,6 @@ public class MatrixTests {
 		assertEquals(π.determinant(), -90, ERROR_TOLERANCE);
 	}
 
-	@Test
 	public void FourByFourDeterminantTests() {
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 },
 				{ 13, 14, 15, 16 } });
@@ -51,7 +49,6 @@ public class MatrixTests {
 		assertEquals(π.determinant(), 98, ERROR_TOLERANCE);
 	}
 
-	@Test
 	public void EightByEightDeterminantTests() {
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 1, 2, 3, 4, 5, 6, 7, 8 },
 				{ 9, 10, 11, 12, 13, 14, 15, 16 }, { 17, 18, 19, 20, 21, 22, 23, 24 },
@@ -71,7 +68,6 @@ public class MatrixTests {
 		assertEquals(π.determinant(), 1378143, 1e4 * ERROR_TOLERANCE);
 	}
 
-	@Test
 	public void EqualsTest() {
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 1, 2 }, { 3, 4 } });
 
@@ -94,7 +90,6 @@ public class MatrixTests {
 		// assertEquals(d.hashCode(), f.hashCode());
 	}
 
-	@Test
 	public void InverseTests() {
 		// see http://www.mathwords.com/i/inverse_of_a_SimpleMatrix.htm
 		SimpleMatrix a = new SimpleMatrix(new double[][] { { 4, 3 }, { 3, 2 } });

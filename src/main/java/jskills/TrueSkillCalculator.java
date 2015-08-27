@@ -3,11 +3,6 @@ package jskills;
 import java.util.Collection;
 import java.util.Map;
 
-import jskills.GameInfo;
-import jskills.IPlayer;
-import jskills.ITeam;
-import jskills.Rating;
-import jskills.SkillCalculator;
 import jskills.trueskill.FactorGraphTrueSkillCalculator;
 
 /**
