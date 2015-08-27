@@ -67,7 +67,7 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
     private static Rating CalculateNewRating(GameInfo gameInfo, Rating selfRating, Rating opponentRating,
                                              PairwiseComparison comparison)
     {
-        double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
+        double drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
 
         double c =
             Math.sqrt(

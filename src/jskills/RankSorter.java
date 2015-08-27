@@ -23,7 +23,7 @@ public class RankSorter {
      * 
      * @param items
      *            The items to sort according to the order specified by ranks.
-     * @param ranks
+     * @param itemRanks
      *            The ranks for each item where 1 is first place.
      * @return the items sorted according to their ranks
      */
@@ -31,28 +31,28 @@ public class RankSorter {
         Guard.argumentNotNull(items, "items");
         Guard.argumentNotNull(itemRanks, "itemRanks");
 
-        int lastObserverdRank = 0;
+        int lastObservedRank = 0;
         boolean needToSort = false;
 
         for (int currentRank : itemRanks) {
             // We're expecting ranks to go up (e.g. 1, 2, 2, 3, ...)
             // If it goes down, then we've got to sort it.
-            if (currentRank < lastObserverdRank) {
+            if (currentRank < lastObservedRank) {
                 needToSort = true;
                 break;
             }
 
-            lastObserverdRank = currentRank;
+            lastObservedRank = currentRank;
         }
 
         // Don't bother doing more work, it's already in a good order
-        if (!needToSort) return new ArrayList<T>(items);
+        if (!needToSort) return new ArrayList<>(items);
 
         // Get the existing items as an indexable list.
-        List<T> itemsInList = new ArrayList<T>(items);
+        List<T> itemsInList = new ArrayList<>(items);
 
         // item -> rank
-        final Map<T, Integer> itemToRank = new HashMap<T, Integer>();
+        final Map<T, Integer> itemToRank = new HashMap<>();
         for (int i = 0; i < itemsInList.size(); i++)
             itemToRank.put(itemsInList.get(i), itemRanks[i]);
         

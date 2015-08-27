@@ -25,12 +25,12 @@ public class PlayerPerformancesToTeamPerformancesLayer extends
     }
 
     @Override
-    public void BuildLayer()
+    public void buildLayer()
     {
         for(List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeam : getInputVariablesGroups())
         {
-            Variable<GaussianDistribution> teamPerformance = CreateOutputVariable(currentTeam);
-            AddLayerFactor(createPlayerToTeamSumFactor(currentTeam, teamPerformance));
+            Variable<GaussianDistribution> teamPerformance = createOutputVariable(currentTeam);
+            addLayerFactor(createPlayerToTeamSumFactor(currentTeam, teamPerformance));
 
             // REVIEW: Does it make sense to have groups of one?
             addOutputVariable(teamPerformance);
@@ -40,11 +40,11 @@ public class PlayerPerformancesToTeamPerformancesLayer extends
     @Override
     public Schedule<GaussianDistribution> createPriorSchedule()
     {
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
         for (GaussianWeightedSumFactor weightedSumFactor : getLocalFactors()) {
-            schedules.add(new ScheduleStep<GaussianDistribution>("Perf to Team Perf Step", weightedSumFactor, 0));
+            schedules.add(new ScheduleStep<>("Perf to Team Perf Step", weightedSumFactor, 0));
         }
-        return ScheduleSequence(schedules, "all player perf to team perf schedule");
+        return scheduleSequence(schedules, "all player perf to team perf schedule");
     }
 
     protected GaussianWeightedSumFactor createPlayerToTeamSumFactor(
@@ -60,30 +60,30 @@ public class PlayerPerformancesToTeamPerformancesLayer extends
     @Override
     public Schedule<GaussianDistribution> createPosteriorSchedule()
     {
-        List<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        List<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
         for (GaussianWeightedSumFactor currentFactor : getLocalFactors()) {
             // TODO is there an off by 1 error here?
             for (int i = 0; i < currentFactor.getNumberOfMessages(); i++) {
-                schedules.add(new ScheduleStep<GaussianDistribution>(
-                                    "team sum perf @" + i,
-                                    currentFactor,
-                                    i));
+                schedules.add(new ScheduleStep<>(
+                                                  "team sum perf @" + i,
+                                                  currentFactor,
+                                                  i));
             }
         }
-        return ScheduleSequence(schedules,
-                                "all of the team's sum iterations");
+        return scheduleSequence(schedules,
+                                 "all of the team's sum iterations");
     }
 
-    private Variable<GaussianDistribution> CreateOutputVariable(
-        List<KeyedVariable<IPlayer, GaussianDistribution>> team)
+    private Variable<GaussianDistribution> createOutputVariable(
+                                                                 List<KeyedVariable<IPlayer, GaussianDistribution>> team)
     {
         StringBuilder sb = new StringBuilder();
         for (KeyedVariable<IPlayer, GaussianDistribution> teamMember : team) {
-            sb.append(teamMember.getKey().toString());
+            sb.append(teamMember.getKey());
             sb.append(", ");
         }
         sb.delete(sb.length()-2, sb.length());
 
-        return new Variable<GaussianDistribution>(GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString());
+        return new Variable<>(GaussianDistribution.UNIFORM, "Team[%s]'s performance", sb.toString());
     }
 }

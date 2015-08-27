@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class FactorList<TValue> {
 
-    private final List<Factor<TValue>> factors = new ArrayList<Factor<TValue>>();
+    private final List<Factor<TValue>> factors = new ArrayList<>();
 
     public double getLogNormalization() { 
         // TODO can these 3 loops be rolled into 1?

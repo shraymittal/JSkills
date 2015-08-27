@@ -9,14 +9,14 @@ public final class MathUtils {
 
 	/** Don't allow instantiation **/
 	private MathUtils() { }
-	
+
 	/** Square a number **/
 	public static double square(double x) { return x*x; }
 	
 	
 	public static double mean(Collection<Double> collection) {
 	    double ret = 0;
-	    for(Double d : collection) ret += d.doubleValue();
+	    for(Double d : collection) ret += d;
 	    return ret/collection.size();
 	}
 }

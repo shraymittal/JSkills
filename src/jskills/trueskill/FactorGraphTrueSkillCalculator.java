@@ -50,7 +50,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 	@Override
 	public double calculateMatchQuality(GameInfo gameInfo, Collection<ITeam> teams) {
 		// We need to create the A matrix which is the player team assigments.
-		List<ITeam> teamAssignmentsList = new ArrayList<ITeam>(teams);
+		List<ITeam> teamAssignmentsList = new ArrayList<>(teams);
 		SimpleMatrix skillsMatrix = GetPlayerCovarianceMatrix(teamAssignmentsList);
 		SimpleMatrix meanVector = GetPlayerMeansVector(teamAssignmentsList);
 		SimpleMatrix meanVectorTranspose = meanVector.transpose();
@@ -77,9 +77,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 		double sqrtPartDenominator = middle.determinant();
 		double sqrtPart = sqrtPartNumerator / sqrtPartDenominator;
 
-		double result = Math.exp(expPart) * Math.sqrt(sqrtPart);
-
-		return result;
+		return Math.exp(expPart) * Math.sqrt(sqrtPart);
 	}
 
 	private static SimpleMatrix GetPlayerMeansVector(Collection<ITeam> teamAssignmentsList) {

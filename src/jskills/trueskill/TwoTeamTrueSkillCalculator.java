@@ -48,7 +48,7 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
 
         boolean wasDraw = (teamRanks[0] == teamRanks[1]);
 
-        HashMap<IPlayer, Rating> results = new HashMap<IPlayer, Rating>();
+        HashMap<IPlayer, Rating> results = new HashMap<>();
 
         UpdatePlayerRatings(gameInfo,
                             results,
@@ -71,7 +71,7 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
                                             ITeam otherTeam,
                                             PairwiseComparison selfToOtherTeamComparison)
     {
-        double drawMargin = DrawMargin.GetDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
+        double drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
         double betaSquared = square(gameInfo.getBeta());
         double tauSquared = square(gameInfo.getDynamicsFactor());
 

@@ -1,9 +1,6 @@
 package jskills;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Helper class for working with a single team.
@@ -35,7 +32,7 @@ public class Team extends HashMap<IPlayer, Rating> implements ITeam {
      *            The rating of the player
      * @returns The instance of the team (for chaining convenience).
      */
-    public Team addPlayer(IPlayer player, Rating rating) {
+    public final Team addPlayer(IPlayer player, Rating rating) {
         put(player, rating);
         return this;
     }
@@ -48,8 +45,8 @@ public class Team extends HashMap<IPlayer, Rating> implements ITeam {
      * @returns A sequence of teams.
      */
     public static Collection<ITeam> concat(ITeam... teams) {
-        List<ITeam> teamslist = new ArrayList<ITeam>();
-        for (ITeam team : teams) teamslist.add(team); 
+        List<ITeam> teamslist = new ArrayList<>();
+        Collections.addAll(teamslist, teams);
         return teamslist;
     }
 }

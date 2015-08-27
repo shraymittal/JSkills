@@ -42,9 +42,9 @@ public class DuellingEloCalculator extends SkillCalculator {
 
         validateTeamCountAndPlayersCountPerTeam(teams);
         List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
-        ITeam[] teamsList = teamsl.toArray(new ITeam[0]);
+        ITeam[] teamsList = teamsl.toArray(new ITeam[teamsl.size()]);
 
-        Map<IPlayer, Map<IPlayer, Double>> deltas = new HashMap<IPlayer, Map<IPlayer, Double>>();
+        Map<IPlayer, Map<IPlayer, Double>> deltas = new HashMap<>();
 
         for (int ixCurrentTeam = 0; ixCurrentTeam < teamsList.length; ixCurrentTeam++) {
             for (int ixOtherTeam = 0; ixOtherTeam < teamsList.length; ixOtherTeam++) {
@@ -72,7 +72,7 @@ public class DuellingEloCalculator extends SkillCalculator {
             }
         }
         
-        Map<IPlayer, Rating> result = new HashMap<IPlayer, Rating>();
+        Map<IPlayer, Rating> result = new HashMap<>();
 
         for (ITeam currentTeam : teamsList) {
             for (Entry<IPlayer, Rating> currentTeamPlayerPair : currentTeam.entrySet()) {
@@ -105,7 +105,7 @@ public class DuellingEloCalculator extends SkillCalculator {
         Map<IPlayer, Double> selfToOpponentDuelDeltas = duels.get(self);
 
         if (selfToOpponentDuelDeltas == null) {
-            selfToOpponentDuelDeltas = new HashMap<IPlayer, Double>();
+            selfToOpponentDuelDeltas = new HashMap<>();
             duels.put(self, selfToOpponentDuelDeltas);
         }
 
@@ -118,15 +118,15 @@ public class DuellingEloCalculator extends SkillCalculator {
         // HACK! Need a better algorithm, this is just to have something there and it isn't good
         double minQuality = 1.0;
 
-        ITeam[] teamList = teams.toArray(new ITeam[0]);
+        ITeam[] teamList = teams.toArray(new ITeam[teams.size()]);
 
         for (int ixCurrentTeam = 0; ixCurrentTeam < teamList.length; ixCurrentTeam++) {
-            EloRating currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList[ixCurrentTeam].values()));;
-            Team currentTeam = new Team(new Player<Integer>(ixCurrentTeam), currentTeamAverageRating);
+            EloRating currentTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList[ixCurrentTeam].values()));
+            Team currentTeam = new Team(new Player<>(ixCurrentTeam), currentTeamAverageRating);
 
             for (int ixOtherTeam = ixCurrentTeam + 1; ixOtherTeam < teamList.length; ixOtherTeam++) {
                 EloRating otherTeamAverageRating = new EloRating(Rating.calcMeanMean(teamList[ixOtherTeam].values()));
-                Team otherTeam = new Team(new Player<Integer>(ixOtherTeam), otherTeamAverageRating);
+                Team otherTeam = new Team(new Player<>(ixOtherTeam), otherTeamAverageRating);
 
                 minQuality = Math.min(minQuality,
                                       twoPlayerEloCalc.calculateMatchQuality(gameInfo,

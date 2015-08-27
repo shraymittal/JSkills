@@ -5,13 +5,14 @@ import java.util.EnumSet;
 import java.util.Map;
 
 import jskills.numerics.Range;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Base class for all skill calculator implementations.
  */
 public abstract class SkillCalculator {
     
-    public enum SupportedOptions { PartialPlay, PartialUpdate; }
+    public enum SupportedOptions { PartialPlay, PartialUpdate}
 
     private final EnumSet<SupportedOptions> supportedOptions;
     private final Range<IPlayer> playersPerTeamAllowed;
@@ -39,7 +40,7 @@ public abstract class SkillCalculator {
      * @param teamRanks
      *            The ranks of the teams where 1 is first place. For a tie,
      *            repeat the number (e.g. 1, 2, 2)
-     * @returns All the players and their new ratings.
+     * @return All the players and their new ratings.
      */
     public abstract Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
             Collection<ITeam> teams, int... teamRanks);
@@ -51,7 +52,7 @@ public abstract class SkillCalculator {
      *            Parameters for the game.
      * @param teams
      *            A mapping of team players and their ratings.
-     * @returns The quality of the match between the teams as a percentage (0% =
+     * @return The quality of the match between the teams as a percentage (0% =
      *          bad, 100% = well matched).
      */
     public abstract double calculateMatchQuality(GameInfo gameInfo,
@@ -63,10 +64,9 @@ public abstract class SkillCalculator {
     }
 
     private static void validateTeamCountAndPlayersCountPerTeam(
-            Collection<ITeam> teams, 
+            @NotNull Collection<ITeam> teams,
             Range<ITeam> totalTeams,
             Range<IPlayer> playersPerTeam) {
-        Guard.argumentNotNull(teams, "teams");
         int countOfTeams = 0;
         for (ITeam currentTeam : teams) {
             if (!playersPerTeam.isInRange(currentTeam.size())) {

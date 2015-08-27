@@ -17,7 +17,7 @@ public class DrawMarginTest {
     }
 
     private static void AssertDrawMargin(double drawProbability, double beta, double expected) {
-        double actual = DrawMargin.GetDrawMarginFromDrawProbability(drawProbability, beta);
+        double actual = DrawMargin.getDrawMarginFromDrawProbability(drawProbability, beta);
         assertEquals(expected, actual, ErrorTolerance);
     }
 }

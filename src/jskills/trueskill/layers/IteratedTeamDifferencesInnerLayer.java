@@ -35,30 +35,28 @@ public class IteratedTeamDifferencesInnerLayer extends
 
     @Override
     public Collection<Factor<GaussianDistribution>> getUntypedFactors() {
-        Collection<Factor<GaussianDistribution>> factors = new ArrayList<Factor<GaussianDistribution>>() {
-            private static final long serialVersionUID = 6370771040490033445L; {
-           addAll(_TeamPerformancesToTeamPerformanceDifferencesLayer.getUntypedFactors());
-           addAll(_TeamDifferencesComparisonLayer.getUntypedFactors());
-        }};
-        
-        return factors;
+      return new ArrayList<Factor<GaussianDistribution>>() {
+          private static final long serialVersionUID = 6370771040490033445L; {
+         addAll(_TeamPerformancesToTeamPerformanceDifferencesLayer.getUntypedFactors());
+         addAll(_TeamDifferencesComparisonLayer.getUntypedFactors());
+      }};
     }
 
     @Override
-    public void BuildLayer()
+    public void buildLayer()
     {
-        _TeamPerformancesToTeamPerformanceDifferencesLayer.SetRawInputVariablesGroups(getInputVariablesGroups());
-        _TeamPerformancesToTeamPerformanceDifferencesLayer.BuildLayer();
+        _TeamPerformancesToTeamPerformanceDifferencesLayer.setRawInputVariablesGroups(getInputVariablesGroups());
+        _TeamPerformancesToTeamPerformanceDifferencesLayer.buildLayer();
 
-        _TeamDifferencesComparisonLayer.SetRawInputVariablesGroups(
-            _TeamPerformancesToTeamPerformanceDifferencesLayer.GetRawOutputVariablesGroups());
-        _TeamDifferencesComparisonLayer.BuildLayer();
+        _TeamDifferencesComparisonLayer.setRawInputVariablesGroups(
+                                                                    _TeamPerformancesToTeamPerformanceDifferencesLayer.getRawOutputVariablesGroups());
+        _TeamDifferencesComparisonLayer.buildLayer();
     }
 
     @Override
     public Schedule<GaussianDistribution> createPriorSchedule()
     {
-        Schedule<GaussianDistribution> loop = null;
+        Schedule<GaussianDistribution> loop;
 
         switch (getInputVariablesGroups().size())
         {
@@ -76,109 +74,107 @@ public class IteratedTeamDifferencesInnerLayer extends
         // When dealing with differences, there are always (n-1) differences, so add in the 1
         int totalTeamDifferences = _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size();
 
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
         schedules.add(loop);
-        schedules.add(new ScheduleStep<GaussianDistribution>(
-                    "teamPerformanceToPerformanceDifferenceFactors[0] @ 1",
-                    _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0), 1));
-        schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = %d - 1] @ 2",
-                            totalTeamDifferences),
-              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(totalTeamDifferences - 1), 2));
+        schedules.add(new ScheduleStep<>(
+                                          "teamPerformanceToPerformanceDifferenceFactors[0] @ 1",
+                                          _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0), 1));
+        schedules.add(new ScheduleStep<>(
+                                          String.format("teamPerformanceToPerformanceDifferenceFactors[teamTeamDifferences = %d - 1] @ 2",
+                                                         totalTeamDifferences),
+                                          _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(totalTeamDifferences - 1), 2));
 
-        return new ScheduleSequence<GaussianDistribution>(
-                "inner schedule", schedules);
+        return new ScheduleSequence<>(
+                                       "inner schedule", schedules);
     }
 
     private Schedule<GaussianDistribution> CreateTwoTeamInnerPriorLoopSchedule()
     {
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
-        schedules.add(new ScheduleStep<GaussianDistribution>(
-                "send team perf to perf differences",
-                _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0),
-                0));
-        schedules.add(new ScheduleStep<GaussianDistribution>(
-                "send to greater than or within factor",
-                _TeamDifferencesComparisonLayer.getLocalFactors().get(0),
-                0));
-        return ScheduleSequence(schedules,"loop of just two teams inner sequence");
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
+        schedules.add(new ScheduleStep<>(
+                                          "send team perf to perf differences",
+                                          _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(0),
+                                          0));
+        schedules.add(new ScheduleStep<>(
+                                          "send to greater than or within factor",
+                                          _TeamDifferencesComparisonLayer.getLocalFactors().get(0),
+                                          0));
+        return scheduleSequence(schedules, "loop of just two teams inner sequence");
     }
 
     private Schedule<GaussianDistribution> CreateMultipleTeamInnerPriorLoopSchedule()
     {
         int totalTeamDifferences = _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().size();
 
-        List<Schedule<GaussianDistribution>> forwardScheduleList = new ArrayList<Schedule<GaussianDistribution>>();
+        List<Schedule<GaussianDistribution>> forwardScheduleList = new ArrayList<>();
 
         for (int i = 0; i < totalTeamDifferences - 1; i++)
         {
-            Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("team perf to perf diff %d",
-                            i),
-              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 0));
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("greater than or within result factor %d",
-                            i),
-              _TeamDifferencesComparisonLayer.getLocalFactors().get(i),
-              0));
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("team perf to perf diff factors [%d], 2",
-                            i),
-              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 2));
+            Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
+            schedules.add(new ScheduleStep<>(
+                                              String.format("team perf to perf diff %d",
+                                                             i),
+                                              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 0));
+            schedules.add(new ScheduleStep<>(
+                                              String.format("greater than or within result factor %d",
+                                                             i),
+                                              _TeamDifferencesComparisonLayer.getLocalFactors().get(i),
+                                              0));
+            schedules.add(new ScheduleStep<>(
+                                              String.format("team perf to perf diff factors [%d], 2",
+                                                             i),
+                                              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(i), 2));
             Schedule<GaussianDistribution> currentForwardSchedulePiece =
-                ScheduleSequence(schedules, "current forward schedule piece %d", i);
+                scheduleSequence(schedules, "current forward schedule piece %d", i);
 
             forwardScheduleList.add(currentForwardSchedulePiece);
         }
 
-        ScheduleSequence<GaussianDistribution> forwardSchedule = new ScheduleSequence<GaussianDistribution>(
-            "forward schedule",
-            forwardScheduleList);
+        ScheduleSequence<GaussianDistribution> forwardSchedule = new ScheduleSequence<>(
+                                                                                         "forward schedule",
+                                                                                         forwardScheduleList);
 
-        List<Schedule<GaussianDistribution>> backwardScheduleList = new ArrayList<Schedule<GaussianDistribution>>();
+        List<Schedule<GaussianDistribution>> backwardScheduleList = new ArrayList<>();
 
         for (int i = 0; i < totalTeamDifferences - 1; i++)
         {
-            Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0",
-                            i),
-              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
-                  totalTeamDifferences - 1 - i), 0));
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0",
-                            i),
-              _TeamDifferencesComparisonLayer.getLocalFactors().get(totalTeamDifferences - 1 - i), 0));
-            schedules.add(new ScheduleStep<GaussianDistribution>(
-                    String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
-                            i),
-              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
-                  totalTeamDifferences - 1 - i), 1));
-            
-            ScheduleSequence<GaussianDistribution> currentBackwardSchedulePiece = new ScheduleSequence<GaussianDistribution>(
-                "current backward schedule piece", schedules);
+            Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
+            schedules.add(new ScheduleStep<>(
+                                              String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 0",
+                                                             i),
+                                              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
+                                                                                                                        totalTeamDifferences - 1 - i), 0));
+            schedules.add(new ScheduleStep<>(
+                                              String.format("greaterThanOrWithinResultFactors[totalTeamDifferences - 1 - %d] @ 0",
+                                                             i),
+                                              _TeamDifferencesComparisonLayer.getLocalFactors().get(totalTeamDifferences - 1 - i), 0));
+            schedules.add(new ScheduleStep<>(
+                                              String.format("teamPerformanceToPerformanceDifferenceFactors[totalTeamDifferences - 1 - %d] @ 1",
+                                                             i),
+                                              _TeamPerformancesToTeamPerformanceDifferencesLayer.getLocalFactors().get(
+                                                                                                                        totalTeamDifferences - 1 - i), 1));
+
+            ScheduleSequence<GaussianDistribution> currentBackwardSchedulePiece = new ScheduleSequence<>(
+                                                                                                          "current backward schedule piece", schedules);
             backwardScheduleList.add(currentBackwardSchedulePiece);
         }
 
-        ScheduleSequence<GaussianDistribution> backwardSchedule = new ScheduleSequence<GaussianDistribution>(
-            "backward schedule",
-            backwardScheduleList);
+        ScheduleSequence<GaussianDistribution> backwardSchedule = new ScheduleSequence<>(
+                                                                                          "backward schedule",
+                                                                                          backwardScheduleList);
 
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
+        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
         schedules.add(forwardSchedule);
         schedules.add(backwardSchedule);
-        ScheduleSequence<GaussianDistribution> forwardBackwardScheduleToLoop = new ScheduleSequence<GaussianDistribution>(
-            "forward Backward Schedule To Loop", schedules);
+        ScheduleSequence<GaussianDistribution> forwardBackwardScheduleToLoop = new ScheduleSequence<>(
+                                                                                                       "forward Backward Schedule To Loop", schedules);
 
         final double initialMaxDelta = 0.0001;
 
-        ScheduleLoop<GaussianDistribution> loop = new ScheduleLoop<GaussianDistribution>(
-            String.format("loop with max delta of %f",
-                          initialMaxDelta),
-            forwardBackwardScheduleToLoop,
-            initialMaxDelta);
-
-        return loop;
+      return new ScheduleLoop<>(
+                                 String.format("loop with max delta of %f",
+                                                initialMaxDelta),
+                                 forwardBackwardScheduleToLoop,
+                                 initialMaxDelta);
     }
 }

@@ -70,8 +70,7 @@ public final class Range<T> {
 		final int PRIME = 31;
 		int result = 1;
 		result = result * PRIME + this.getMin();
-		result = result * PRIME + this.getMax();
-		return result;
+		return result * PRIME + this.getMax();
 	}
 	
 	@java.lang.Override

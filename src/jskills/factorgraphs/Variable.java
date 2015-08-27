@@ -13,7 +13,7 @@ public class Variable<TValue> {
 		resetToPrior();
 	}
 	
-	public void resetToPrior() {
+	public final void resetToPrior() {
 		value = prior;
 	}
 	

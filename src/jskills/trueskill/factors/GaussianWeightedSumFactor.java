@@ -36,7 +36,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
     public GaussianWeightedSumFactor(Variable<GaussianDistribution> sumVariable,
                                      List<? extends Variable<GaussianDistribution>> variablesToSum, double[] variableWeights)
     {
-        super(CreateName(sumVariable, variablesToSum, variableWeights));
+        super(createName(sumVariable, variablesToSum, variableWeights));
         // Have to add in this workaround because Arrays.fill returns void
         if(variableWeights == null) {
             variableWeights = new double[variablesToSum.size()];
@@ -50,12 +50,14 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         _Weights[0] = new double[variableWeights.length];
         System.arraycopy(variableWeights, 0,  _Weights[0], 0, variableWeights.length);
 		_WeightsSquared[0] = new double[variableWeights.length];
-        for (int i = 0; i < _Weights[0].length; i++)
-            _WeightsSquared[0][i] = _Weights[0][i]*_Weights[0][i];
-
+        for (int i = 0; i < _Weights[0].length; i++) {
+            _WeightsSquared[0][i] = _Weights[0][i] * _Weights[0][i];
+        }
         // 0..n-1
         int[] temp = new int[1+variablesToSum.size()];
-        for (int i = 0; i < temp.length; i++) temp[i] = i;
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = i;
+        }
         _VariableIndexOrdersForWeights.add(temp);
 
 
@@ -226,10 +228,10 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         return UpdateHelper(_Weights[messageIndex], _WeightsSquared[messageIndex], updatedMessages, updatedVariables);
     }
 
-    private static String CreateName(Variable<GaussianDistribution> sumVariable,
-                                     List<? extends Variable<GaussianDistribution>> variablesToSum, double[] weights)
+    private static String createName(Variable<GaussianDistribution> sumVariable,
+                                      List<? extends Variable<GaussianDistribution>> variablesToSum, double[] weights)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(sumVariable.toString());
         sb.append(" = ");
         for (int i = 0; i < variablesToSum.size(); i++)

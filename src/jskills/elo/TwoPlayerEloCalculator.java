@@ -1,12 +1,6 @@
 package jskills.elo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import jskills.GameInfo;
 import jskills.IPlayer;
@@ -33,10 +27,10 @@ public abstract class TwoPlayerEloCalculator extends SkillCalculator {
         validateTeamCountAndPlayersCountPerTeam(teams);
         List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
 
-        Map<IPlayer, Rating> result = new HashMap<IPlayer, Rating>();
+        Map<IPlayer, Rating> result = new HashMap<>();
         boolean isDraw = (teamRanks[0] == teamRanks[1]);
 
-        List<IPlayer> players = new ArrayList<IPlayer>(2);
+        List<IPlayer> players = new ArrayList<>(2);
         for(ITeam team : teamsl)
             players.add(team.keySet().toArray(new IPlayer[1])[0]);
 
@@ -78,8 +72,11 @@ public abstract class TwoPlayerEloCalculator extends SkillCalculator {
         validateTeamCountAndPlayersCountPerTeam(teams);
         
         // Extract both players from the teams
-        List<IPlayer> players = new ArrayList<IPlayer>(2);
-        for(ITeam team : teams) players.add(team.keySet().toArray(new IPlayer[0])[0]);
+        List<IPlayer> players = new ArrayList<>(2);
+        for(ITeam team : teams) {
+            Set<IPlayer> iPlayers = team.keySet();
+            players.add(iPlayers.toArray(new IPlayer[iPlayers.size()])[0]);
+        }
 
         // Extract each player's rating from their team
         Iterator<ITeam> teamit = teams.iterator();

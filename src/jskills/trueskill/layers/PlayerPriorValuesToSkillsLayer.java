@@ -34,7 +34,7 @@ public class PlayerPriorValuesToSkillsLayer extends
     }
 
     @Override
-    public void BuildLayer()
+    public void buildLayer()
     {
         for(ITeam currentTeam : _Teams)
         {
@@ -44,7 +44,7 @@ public class PlayerPriorValuesToSkillsLayer extends
             {
                 KeyedVariable<IPlayer, GaussianDistribution> playerSkill =
                     CreateSkillOutputVariable(currentTeamPlayer.getKey());
-                AddLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill));
+                addLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill));
                 currentTeamSkills.add(playerSkill);
             }
 
@@ -59,7 +59,7 @@ public class PlayerPriorValuesToSkillsLayer extends
         for (GaussianPriorFactor prior : getLocalFactors()) {
             schedules.add(new ScheduleStep<GaussianDistribution>("Prior to Skill Step", prior, 0));
         }
-        return ScheduleSequence(schedules, "All priors");
+        return scheduleSequence(schedules, "All priors");
     }
 
     private GaussianPriorFactor CreatePriorFactor(IPlayer player, Rating priorRating,

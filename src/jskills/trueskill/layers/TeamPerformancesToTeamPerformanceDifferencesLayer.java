@@ -19,7 +19,7 @@ public class TeamPerformancesToTeamPerformanceDifferencesLayer extends
     }
 
     @Override
-    public void BuildLayer()
+    public void buildLayer()
     {
         for (int i = 0; i < getInputVariablesGroups().size() - 1; i++)
         {
@@ -27,7 +27,7 @@ public class TeamPerformancesToTeamPerformanceDifferencesLayer extends
             Variable<GaussianDistribution> weakerTeam = getInputVariablesGroups().get(i + 1).get(0);
 
             Variable<GaussianDistribution> currentDifference = createOutputVariable();
-            AddLayerFactor(CreateTeamPerformanceToDifferenceFactor(strongerTeam, weakerTeam, currentDifference));
+            addLayerFactor(CreateTeamPerformanceToDifferenceFactor(strongerTeam, weakerTeam, currentDifference));
 
             // REVIEW: Does it make sense to have groups of one?
             addOutputVariable(currentDifference);

@@ -1,10 +1,10 @@
-<suite name="All" parallel="false">
+<suite name="All" parallel="true">
   <test name="All">
     <packages>
-      <package name="jskills"></package>
-      <package name="jskills.numerics"></package>
-      <package name="jskills.elo"></package>
-      <package name="jskills.trueskill"></package>
+      <package name="jskills" />
+      <package name="jskills.numerics" />
+      <package name="jskills.elo" />
+      <package name="jskills.trueskill" />
     </packages>
   </test>
 </suite>

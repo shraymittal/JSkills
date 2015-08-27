@@ -169,18 +169,13 @@ public class GaussianDistribution {
 	public static double at(double x, double mean, double standardDeviation) {
 		double multiplier = 1.0 / (standardDeviation * sqrt(2 * PI));
 		double expPart = exp((-1.0 * pow(x - mean, 2.0)) / (2 * (standardDeviation * standardDeviation)));
-		double result = multiplier * expPart;
-		return result;
-	}
-
-	public static double cumulativeTo(double x, double mean, double standardDeviation) {
-		double invsqrt2 = -0.7071067811865476;
-		double result = errorFunctionCumulativeTo(invsqrt2 * x);
-		return 0.5 * result;
+		return multiplier * expPart;
 	}
 
 	public static double cumulativeTo(double x) {
-		return cumulativeTo(x, 0, 1);
+		double invsqrt2 = -0.7071067811865476;
+		double result = errorFunctionCumulativeTo(invsqrt2 * x);
+		return 0.5 * result;
 	}
 
 	private static double errorFunctionCumulativeTo(double x) {
@@ -205,7 +200,7 @@ public class GaussianDistribution {
 		return x >= 0.0 ? ans : (2.0 - ans);
 	}
 
-	private static double InverseErrorFunctionCumulativeTo(double p) {
+	private static double inverseErrorFunctionCumulativeTo(double p) {
 		// From page 265 of numerical recipes
 		if (p >= 2.0)
 			return -100;
@@ -223,7 +218,7 @@ public class GaussianDistribution {
 
 	public static double inverseCumulativeTo(double x, double mean, double standardDeviation) {
 		// From numerical recipes, page 320
-		return mean - sqrt(2) * standardDeviation * InverseErrorFunctionCumulativeTo(2 * x);
+		return mean - sqrt(2) * standardDeviation * inverseErrorFunctionCumulativeTo(2 * x);
 	}
 
 	public static double inverseCumulativeTo(double x) {

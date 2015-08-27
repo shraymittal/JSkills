@@ -24,7 +24,7 @@ public class PlayerSkillsToPerformancesLayer extends
     }
 
     @Override
-    public void BuildLayer()
+    public void buildLayer()
     {
         for(List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeam : getInputVariablesGroups())
         {
@@ -34,7 +34,7 @@ public class PlayerSkillsToPerformancesLayer extends
             {
                 KeyedVariable<IPlayer, GaussianDistribution> playerPerformance =
                     CreateOutputVariable(playerSkillVariable.getKey());
-                AddLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance));
+                addLayerFactor(CreateLikelihood(playerSkillVariable, playerPerformance));
                 currentTeamPlayerPerformances.add(playerPerformance);
             }
 
@@ -45,7 +45,7 @@ public class PlayerSkillsToPerformancesLayer extends
     private GaussianLikelihoodFactor CreateLikelihood(KeyedVariable<IPlayer, GaussianDistribution> playerSkill,
                                                       KeyedVariable<IPlayer, GaussianDistribution> playerPerformance)
     {
-        return new GaussianLikelihoodFactor(MathUtils.square(ParentFactorGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
+        return new GaussianLikelihoodFactor(MathUtils.square(parentFactorGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
     }
 
     private KeyedVariable<IPlayer, GaussianDistribution> CreateOutputVariable(IPlayer key)
@@ -60,8 +60,8 @@ public class PlayerSkillsToPerformancesLayer extends
         for (GaussianLikelihoodFactor likelihood : getLocalFactors()) {
             schedules.add(new ScheduleStep<GaussianDistribution>("Skill to Perf step", likelihood, 0));
         }
-        return ScheduleSequence(schedules,
-            "All skill to performance sending");
+        return scheduleSequence(schedules,
+                                 "All skill to performance sending");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class PlayerSkillsToPerformancesLayer extends
         for (GaussianLikelihoodFactor likelihood : getLocalFactors()) {
             schedules.add(new ScheduleStep<GaussianDistribution>("Skill to Perf step", likelihood, 1));
         }
-        return ScheduleSequence(schedules,
-            "All skill to performance sending");
+        return scheduleSequence(schedules,
+                                 "All skill to performance sending");
     }
 }

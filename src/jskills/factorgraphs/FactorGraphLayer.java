@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class FactorGraphLayer
-<TParentFactorGraph extends FactorGraph<TParentFactorGraph>, 
+<TParentFactorGraph extends FactorGraph<TParentFactorGraph>,
 TValue, 
 TBaseVariable extends Variable<TValue>, 
 TInputVariable extends Variable<TValue>, 
@@ -13,13 +13,13 @@ TFactor extends Factor<TValue>,
 TOutputVariable extends Variable<TValue>> 
     extends FactorGraphLayerBase<TValue> {
 
-    private final List<TFactor> _LocalFactors = new ArrayList<TFactor>();
-    private final List<List<TOutputVariable>> _OutputVariablesGroups = new ArrayList<List<TOutputVariable>>();
-    private List<List<TInputVariable>> _InputVariablesGroups = new ArrayList<List<TInputVariable>>();
+    private final List<TFactor> _LocalFactors = new ArrayList<>();
+    private final List<List<TOutputVariable>> _OutputVariablesGroups = new ArrayList<>();
+    private List<List<TInputVariable>> _InputVariablesGroups = new ArrayList<>();
 
     protected FactorGraphLayer(TParentFactorGraph parentGraph)
     {
-        ParentFactorGraph = parentGraph;
+        parentFactorGraph = parentGraph;
     }
 
     protected List<List<TInputVariable>> getInputVariablesGroups() {
@@ -28,10 +28,10 @@ TOutputVariable extends Variable<TValue>>
 
     // HACK
 
-    public TParentFactorGraph ParentFactorGraph;
-    public TParentFactorGraph getParentFactorGraph() { return ParentFactorGraph; }
+    public TParentFactorGraph parentFactorGraph;
+    public TParentFactorGraph getParentFactorGraph() { return parentFactorGraph; }
     @SuppressWarnings("unused") // TODO remove if really unnecessary
-    private void setParentFactorGraph( TParentFactorGraph parent ) { ParentFactorGraph = parent; }
+    private void setParentFactorGraph( TParentFactorGraph parent ) { parentFactorGraph = parent; }
     
     public List<List<TOutputVariable>> getOutputVariablesGroups(){
         return _OutputVariablesGroups;
@@ -42,7 +42,7 @@ TOutputVariable extends Variable<TValue>>
     }
     
     public void addOutputVariable(TOutputVariable var) {
-        List<TOutputVariable> g = new ArrayList<TOutputVariable>(1); g.add(var);
+        List<TOutputVariable> g = new ArrayList<>(1); g.add(var);
         addOutputVariableGroup(g);
     }
 
@@ -51,35 +51,33 @@ TOutputVariable extends Variable<TValue>>
     }
 
     @Override
-    @SuppressWarnings("unchecked") // TODO there has to be a safer way to do this
     public Collection<Factor<TValue>> getUntypedFactors() {
-        return (Collection<Factor<TValue>>) _LocalFactors;
+        return new ArrayList<Factor<TValue>>(_LocalFactors);
     }
 
     @Override
     @SuppressWarnings("unchecked") // TODO there has to be a safer way to do this
-    public void SetRawInputVariablesGroups(Object value)
+    public void setRawInputVariablesGroups(Object value)
     {
-        List<List<TInputVariable>> newList = (List<List<TInputVariable>>)value;
-        _InputVariablesGroups = newList;
+        _InputVariablesGroups = (List<List<TInputVariable>>)value;
     }
 
     @Override
-    public Object GetRawOutputVariablesGroups()
+    public Object getRawOutputVariablesGroups()
     {
         return _OutputVariablesGroups;
     }
 
-    protected Schedule<TValue> ScheduleSequence(
-        Collection<Schedule<TValue>> itemsToSequence,
-        String nameFormat,
-        Object... args)
+    protected Schedule<TValue> scheduleSequence(
+                                                 Collection<Schedule<TValue>> itemsToSequence,
+                                                 String nameFormat,
+                                                 Object... args)
     {
         String formattedName = String.format(nameFormat, args);
-        return new ScheduleSequence<TValue>(formattedName, itemsToSequence);
+        return new ScheduleSequence<>(formattedName, itemsToSequence);
     }
 
-    protected void AddLayerFactor(TFactor factor)
+    protected void addLayerFactor(TFactor factor)
     {
         _LocalFactors.add(factor);
     }

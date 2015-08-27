@@ -10,13 +10,13 @@ import java.util.Map;
 
 public abstract class Factor<TValue> {
 
-    protected final List<Message<TValue>> messages = new ArrayList<Message<TValue>>();
+    protected final List<Message<TValue>> messages = new ArrayList<>();
 
     private final Map<Message<TValue>, Variable<TValue>> messageToVariableBinding =
-        new HashMap<Message<TValue>, Variable<TValue>>();
+      new HashMap<>();
 
     private final String name;
-    protected final List<Variable<TValue>> variables = new ArrayList<Variable<TValue>>();
+    protected final List<Variable<TValue>> variables = new ArrayList<>();
 
     protected Factor(String name) { this.name = "Factor[" + name + "]"; }
 
@@ -75,5 +75,5 @@ public abstract class Factor<TValue> {
     }
 
     @Override
-    public String toString() { return name != null ? name : super.toString(); }
+    public String toString() { return name; }
 }

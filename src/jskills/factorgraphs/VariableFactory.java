@@ -9,8 +9,4 @@ public class VariableFactory<TValue> {
         this.variablePriorInitializer = variablePriorInitializer;
     }
 
-    public Variable<TValue> createBasicVariable(String nameFormat, Object... args) {
-        return new Variable<TValue>(String.format(nameFormat, args), 
-                                    variablePriorInitializer.eval());
-    }
 }
