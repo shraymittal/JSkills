@@ -1,10 +1,13 @@
+#TrueSkill
+
+[![Build Status](https://travis-ci.org/choweiyuan/JSkills.svg?branch=master)](https://travis-ci.org/choweiyuan/JSkills)
+
 The code for the TrueSkill calculator is in the "Skills" folder and its unit
 tests are in the "UnitTests" folder.
 
 For more details, see the "README" file in each of those folders.
 
-
-?Hi there!
+Hi there!
 
 Thanks for downloading this code and opening up this file. The goal of this
 project is to provide an annotated reference implementation of Microsoft's
