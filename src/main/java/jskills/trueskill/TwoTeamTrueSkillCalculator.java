@@ -1,24 +1,13 @@
 package jskills.trueskill;
 
-import static jskills.numerics.MathUtils.square;
-
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
-import jskills.GameInfo;
-import jskills.Guard;
-import jskills.IPlayer;
-import jskills.ITeam;
-import jskills.PairwiseComparison;
-import jskills.RankSorter;
-import jskills.Rating;
-import jskills.SkillCalculator;
+import jskills.*;
 import jskills.numerics.Range;
+import org.jetbrains.annotations.NotNull;
+
+import static jskills.numerics.MathUtils.square;
 
 /**
  * Calculates new ratings for only two teams where each team has 1 or more players.
@@ -34,11 +23,10 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
     }
 
      @Override
-    public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo,
+    public Map<IPlayer, Rating> calculateNewRatings(@NotNull GameInfo gameInfo,
                                                     Collection<ITeam> teams, 
                                                     int... teamRanks)
     {
-        Guard.argumentNotNull(gameInfo, "gameInfo");
         validateTeamCountAndPlayersCountPerTeam(teams);
 
         List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
@@ -139,9 +127,8 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
     }
 
     @Override
-    public double calculateMatchQuality(GameInfo gameInfo, Collection<ITeam> teams)
+    public double calculateMatchQuality(@NotNull GameInfo gameInfo, Collection<ITeam> teams)
     {
-        Guard.argumentNotNull(gameInfo, "gameInfo");
         validateTeamCountAndPlayersCountPerTeam(teams);
 
         Iterator<ITeam> teamsIt = teams.iterator();

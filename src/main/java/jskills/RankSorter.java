@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Helper class to sort ranks in non-decreasing order.
  */
@@ -27,10 +29,7 @@ public class RankSorter {
      *            The ranks for each item where 1 is first place.
      * @return the items sorted according to their ranks
      */
-    public static <T> List<T> sort(Collection<T> items, int[] itemRanks) {
-        Guard.argumentNotNull(items, "items");
-        Guard.argumentNotNull(itemRanks, "itemRanks");
-
+    public static <T> List<T> sort(@NotNull Collection<T> items, @NotNull int[] itemRanks) {
         int lastObservedRank = 0;
         boolean needToSort = false;
 

@@ -1,24 +1,13 @@
 package jskills.trueskill;
 
-import static jskills.numerics.MathUtils.square;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-
-import jskills.GameInfo;
-import jskills.Guard;
-import jskills.IPlayer;
-import jskills.ITeam;
-import jskills.PartialPlay;
-import jskills.RankSorter;
-import jskills.Rating;
-import jskills.SkillCalculator;
+import jskills.*;
 import jskills.numerics.Range;
-
 import org.ejml.simple.SimpleMatrix;
+import org.jetbrains.annotations.NotNull;
+
+import static jskills.numerics.MathUtils.square;
 
 /**
  * Calculates TrueSkill using a full factor graph.
@@ -30,8 +19,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 	}
 
 	@Override
-	public Map<IPlayer, Rating> calculateNewRatings(GameInfo gameInfo, Collection<ITeam> teams, int... teamRanks) {
-		Guard.argumentNotNull(gameInfo, "gameInfo");
+	public Map<IPlayer, Rating> calculateNewRatings(@NotNull GameInfo gameInfo, Collection<ITeam> teams, int... teamRanks) {
 		validateTeamCountAndPlayersCountPerTeam(teams);
 
 		List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
