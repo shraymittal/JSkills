@@ -18,9 +18,9 @@ public class GaussianPriorFactor extends GaussianFactor
         super(String.format("Prior value going to %s", variable));
         _NewMessage = new GaussianDistribution(mean, Math.sqrt(variance));
         CreateVariableToMessageBinding(variable,
-                                       new Message<GaussianDistribution>(
-                                           GaussianDistribution.fromPrecisionMean(0, 0), "message from %s to %s",
-                                           this, variable));
+                new Message<>(
+                        GaussianDistribution.fromPrecisionMean(0, 0), "message from %s to %s",
+                        this, variable));
     }
 
     @Override
@@ -28,11 +28,10 @@ public class GaussianPriorFactor extends GaussianFactor
                                             Variable<GaussianDistribution> variable)
     {
         GaussianDistribution oldMarginal = new GaussianDistribution(variable.getValue());
-        Message<GaussianDistribution> oldMessage = message;
         GaussianDistribution newMarginal =
             GaussianDistribution.fromPrecisionMean(
-                oldMarginal.getPrecisionMean() + _NewMessage.getPrecisionMean() - oldMessage.getValue().getPrecisionMean(),
-                oldMarginal.getPrecision() + _NewMessage.getPrecision() - oldMessage.getValue().getPrecision());
+                oldMarginal.getPrecisionMean() + _NewMessage.getPrecisionMean() - message.getValue().getPrecisionMean(),
+                oldMarginal.getPrecision() + _NewMessage.getPrecision() - message.getValue().getPrecision());
         variable.setValue(newMarginal);
         message.setValue(_NewMessage);
         return sub(oldMarginal, newMarginal);

@@ -1,17 +1,14 @@
 package jskills.trueskill.factors;
 
-import static jskills.numerics.GaussianDistribution.divide;
-import static jskills.numerics.GaussianDistribution.mult;
-import static jskills.numerics.GaussianDistribution.sub;
+import jskills.factorgraphs.Message;
+import jskills.factorgraphs.Variable;
+import jskills.numerics.GaussianDistribution;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jskills.Guard;
-import jskills.factorgraphs.Message;
-import jskills.factorgraphs.Variable;
-import jskills.numerics.GaussianDistribution;
+import static jskills.numerics.GaussianDistribution.*;
 
 /**
  * Factor that sums together multiple Gaussians.
@@ -19,7 +16,7 @@ import jskills.numerics.GaussianDistribution;
  */
 public class GaussianWeightedSumFactor extends GaussianFactor
 {
-    private final List<int[]> _VariableIndexOrdersForWeights = new ArrayList<int[]>();
+    private final List<int[]> _VariableIndexOrdersForWeights = new ArrayList<>();
 
     // This following is used for convenience, for example, the first entry is [0, 1, 2] 
     // corresponding to v[0] = a1*v[1] + a2*v[2]
@@ -209,10 +206,8 @@ public class GaussianWeightedSumFactor extends GaussianFactor
         List<Message<GaussianDistribution>> allMessages = getMessages();
         List<Variable<GaussianDistribution>> allVariables = getVariables();
 
-        Guard.argumentIsValidIndex(messageIndex, allMessages.size(), "messageIndex");
-
-        List<Message<GaussianDistribution>> updatedMessages = new ArrayList<Message<GaussianDistribution>>();
-        List<Variable<GaussianDistribution>> updatedVariables = new ArrayList<Variable<GaussianDistribution>>();
+        List<Message<GaussianDistribution>> updatedMessages = new ArrayList<>();
+        List<Variable<GaussianDistribution>> updatedVariables = new ArrayList<>();
 
         int[] indicesToUse = _VariableIndexOrdersForWeights.get(messageIndex);
 

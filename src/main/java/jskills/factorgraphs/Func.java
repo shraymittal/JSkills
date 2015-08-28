@@ -9,5 +9,5 @@ package jskills.factorgraphs;
  */
 public interface Func<TResult> {
 
-    public TResult eval();
+    TResult eval();
 }

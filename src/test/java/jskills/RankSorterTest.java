@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class RankSorterTest {
     public void sortAlreadySortedTest() {
-        List<String> people = Arrays.asList(new String[] { "One", "Two", "Three" });
+        List<String> people = Arrays.asList("One", "Two", "Three");
         int[] ranks = new int[] { 1, 2, 3 },
         sortedranks = new int[] { 1, 2, 3 };
 
@@ -22,11 +22,11 @@ public class RankSorterTest {
             assertEquals(ranks[i], sortedranks[i], String.format(
                     "Different at index %d. Expected <%d>, was <%d>.", 
                     i, sortedranks[i], ranks[i]));
-        assertEquals(people, Arrays.asList(new String[] { "One", "Two", "Three" }));
+        assertEquals(people, Arrays.asList("One", "Two", "Three"));
     }
 
     public void sortUnsortedTest() {
-        List<String> people = Arrays.asList(new String[] { "Five", "Two1", "Two2", "One", "Four" });
+        List<String> people = Arrays.asList("Five", "Two1", "Two2", "One", "Four");
         int[] ranks = new int[] { 5, 2, 2, 1, 4 },
         sortedranks = new int[] { 1, 2, 2, 4, 5 };
 
@@ -38,6 +38,6 @@ public class RankSorterTest {
             assertEquals(ranks[i], sortedranks[i], String.format(
                     "Different at index %d. Expected <%d>, was <%d>.", 
                     i, sortedranks[i], ranks[i]));
-        assertEquals(people, Arrays.asList(new String[] { "One", "Two1", "Two2", "Four", "Five" }));
+        assertEquals(people, Arrays.asList("One", "Two1", "Two2", "Four", "Five"));
     }
 }

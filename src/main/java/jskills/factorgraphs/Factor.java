@@ -1,7 +1,5 @@
 package jskills.factorgraphs;
 
-import static jskills.Guard.argumentIsValidIndex;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +34,6 @@ public abstract class Factor<TValue> {
 
     /** Update the message and marginal of the i-th variable that the factor is connected to **/
     public double updateMessage(int messageIndex) {
-        argumentIsValidIndex(messageIndex, messages.size(), "messageIndex");
         return updateMessage(messages.get(messageIndex), messageToVariableBinding.get(messages.get(messageIndex)));
     }
 
@@ -55,8 +52,6 @@ public abstract class Factor<TValue> {
      * constant
      **/
     public double SendMessage(int messageIndex) {
-        argumentIsValidIndex(messageIndex, messages.size(), "messageIndex");
-
         Message<TValue> message = messages.get(messageIndex);
         Variable<TValue> variable = messageToVariableBinding.get(message);
         return SendMessage(message, variable);

@@ -10,5 +10,5 @@ public interface ISupportPartialPlay {
      * indicates the player didn't play and 1.0 indicates the player played 100%
      * of the time.
      */
-    public double getPartialPlayPercentage();
+    double getPartialPlayPercentage();
 }
