@@ -18,15 +18,15 @@
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for jskill" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="jskill" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="jskill" target="1.7" />
+      <module name="jskill" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
