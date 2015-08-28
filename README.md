@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/choweiyuan/JSkills.svg?branch=master)](https://travis-ci.org/choweiyuan/JSkills)
 
+[![Coverage Status](https://coveralls.io/repos/choweiyuan/JSkills/badge.svg?branch=master&service=github)](https://coveralls.io/github/choweiyuan/JSkills?branch=master)
+
 The code for the TrueSkill calculator is in the "Skills" folder and its unit
 tests are in the "UnitTests" folder.
 
