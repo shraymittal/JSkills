@@ -43,8 +43,7 @@ public abstract class Factor<TValue> {
 
     /** Resets the marginal of the variables a factor is connected to **/
     public void ResetMarginals() {
-        for(Variable<TValue> variable : messageToVariableBinding.values())
-            variable.resetToPrior();
+        messageToVariableBinding.values().forEach(Variable::resetToPrior);
     }
 
     /**

@@ -1,6 +1,7 @@
 package jskills.trueskill;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import jskills.*;
 import jskills.numerics.Range;
@@ -93,10 +94,9 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 	 * TODO Make array? Helper function that gets a list of values for all player ratings
 	 **/
 	private static List<Double> GetPlayerMeanRatingValues(Collection<ITeam> teamAssignmentsList) {
-		List<Double> playerRatingValues = new ArrayList<Double>();
+		List<Double> playerRatingValues = new ArrayList<>();
 		for (ITeam currentTeam : teamAssignmentsList)
-			for (Rating currentRating : currentTeam.values())
-				playerRatingValues.add(currentRating.getMean());
+			playerRatingValues.addAll(currentTeam.values().stream().map(Rating::getMean).collect(Collectors.toList()));
 
 		return playerRatingValues;
 	}
@@ -105,10 +105,9 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 	 * TODO Make array? Helper function that gets a list of values for all player ratings
 	 **/
 	private static List<Double> GetPlayerVarianceRatingValues(Collection<ITeam> teamAssignmentsList) {
-		List<Double> playerRatingValues = new ArrayList<Double>();
+		List<Double> playerRatingValues = new ArrayList<>();
 		for (ITeam currentTeam : teamAssignmentsList)
-			for (Rating currentRating : currentTeam.values())
-				playerRatingValues.add(currentRating.getVariance());
+			playerRatingValues.addAll(currentTeam.values().stream().map(Rating::getVariance).collect(Collectors.toList()));
 
 		return playerRatingValues;
 	}
@@ -135,7 +134,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 	 */
 	private static SimpleMatrix CreatePlayerTeamAssignmentMatrix(List<ITeam> teamAssignmentsList, int totalPlayers) {
 
-		List<List<Double>> playerAssignments = new ArrayList<List<Double>>();
+		List<List<Double>> playerAssignments = new ArrayList<>();
 		int totalPreviousPlayers = 0;
 
 		for (int i = 0; i < teamAssignmentsList.size() - 1; i++) {
@@ -143,7 +142,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 
 			// Need to add in 0's for all the previous players, since they're not
 			// on this team
-			List<Double> currentRowValues = new ArrayList<Double>();
+			List<Double> currentRowValues = new ArrayList<>();
 			for (int j = 0; j < totalPreviousPlayers; j++)
 				currentRowValues.add(0.);
 			playerAssignments.add(currentRowValues);
@@ -155,10 +154,8 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 			}
 
 			ITeam nextTeam = teamAssignmentsList.get(i + 1);
-			for (IPlayer nextTeamPlayer : nextTeam.keySet()) {
-				// Add a -1 * playing time to represent the difference
-				currentRowValues.add(-1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer));
-			}
+			// Add a -1 * playing time to represent the difference
+			currentRowValues.addAll(nextTeam.keySet().stream().map(nextTeamPlayer -> -1 * PartialPlay.getPartialPlayPercentage(nextTeamPlayer)).collect(Collectors.toList()));
 		}
 
 		SimpleMatrix playerTeamAssignmentsMatrix = new SimpleMatrix(totalPlayers, teamAssignmentsList.size() - 1);

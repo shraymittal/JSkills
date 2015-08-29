@@ -11,7 +11,6 @@ import jskills.GameInfo;
 import jskills.IPlayer;
 import jskills.ITeam;
 import jskills.Rating;
-import jskills.factorgraphs.Factor;
 import jskills.factorgraphs.FactorGraph;
 import jskills.factorgraphs.FactorGraphLayerBase;
 import jskills.factorgraphs.FactorList;
@@ -79,10 +78,7 @@ public class TrueSkillFactorGraph extends FactorGraph<TrueSkillFactorGraph>
 
         for(FactorGraphLayerBase<GaussianDistribution> currentLayer :_Layers)
         {
-            for(Factor<GaussianDistribution> currentFactor :currentLayer.getUntypedFactors())
-            {
-                factorList.addFactor(currentFactor);
-            }
+            currentLayer.getUntypedFactors().forEach(factorList::addFactor);
         }
 
         double logZ = factorList.getLogNormalization();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import jskills.IPlayer;
 import jskills.ITeam;
@@ -38,13 +39,13 @@ public class PlayerPriorValuesToSkillsLayer extends
     {
         for(ITeam currentTeam : _Teams)
         {
-            List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeamSkills = new ArrayList<KeyedVariable<IPlayer, GaussianDistribution>>();
+            @SuppressWarnings("Convert2Diamond") List<KeyedVariable<IPlayer, GaussianDistribution>> currentTeamSkills = new ArrayList<>();
 
             for(Entry<IPlayer, Rating> currentTeamPlayer : currentTeam.entrySet())
             {
                 KeyedVariable<IPlayer, GaussianDistribution> playerSkill =
                     CreateSkillOutputVariable(currentTeamPlayer.getKey());
-                addLayerFactor(CreatePriorFactor(currentTeamPlayer.getKey(), currentTeamPlayer.getValue(), playerSkill));
+                addLayerFactor(CreatePriorFactor(currentTeamPlayer.getValue(), playerSkill));
                 currentTeamSkills.add(playerSkill);
             }
 
@@ -55,14 +56,12 @@ public class PlayerPriorValuesToSkillsLayer extends
     @Override
     public Schedule<GaussianDistribution> createPriorSchedule()
     {
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<Schedule<GaussianDistribution>>();
-        for (GaussianPriorFactor prior : getLocalFactors()) {
-            schedules.add(new ScheduleStep<GaussianDistribution>("Prior to Skill Step", prior, 0));
-        }
+        @SuppressWarnings("Convert2Diamond") Collection<Schedule<GaussianDistribution>> schedules = getLocalFactors().stream().map(prior -> new ScheduleStep<>("Prior to Skill Step", prior, 0)).collect(Collectors.toList());
+        //noinspection Convert2Diamond
         return scheduleSequence(schedules, "All priors");
     }
 
-    private GaussianPriorFactor CreatePriorFactor(IPlayer player, Rating priorRating,
+    private GaussianPriorFactor CreatePriorFactor(Rating priorRating,
                                                   Variable<GaussianDistribution> skillsVariable)
     {
         return new GaussianPriorFactor(priorRating.getMean(),
@@ -72,6 +71,7 @@ public class PlayerPriorValuesToSkillsLayer extends
 
     private KeyedVariable<IPlayer, GaussianDistribution> CreateSkillOutputVariable(IPlayer key)
     {
-        return new KeyedVariable<IPlayer, GaussianDistribution>(key, GaussianDistribution.UNIFORM, "%s's skill", key.toString());
+        //noinspection Convert2Diamond
+        return new KeyedVariable<>(key, GaussianDistribution.UNIFORM, "%s's skill", key.toString());
     }
 }

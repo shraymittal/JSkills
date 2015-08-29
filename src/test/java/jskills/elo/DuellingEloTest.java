@@ -17,16 +17,16 @@ public class DuellingEloTest {
 
         GameInfo gameInfo = GameInfo.getDefaultGameInfo();
 
-        Player<Integer> player1 = new Player<Integer>(1);
-        Player<Integer> player2 = new Player<Integer>(2);
+        Player<Integer> player1 = new Player<>(1);
+        Player<Integer> player2 = new Player<>(2);
 
 
         Team team1 = new Team()
             .addPlayer(player1, gameInfo.getDefaultRating())
             .addPlayer(player2, gameInfo.getDefaultRating());
 
-        Player<Integer> player3 = new Player<Integer>(3);
-        Player<Integer> player4 = new Player<Integer>(4);
+        Player<Integer> player3 = new Player<>(3);
+        Player<Integer> player4 = new Player<>(4);
 
         Team team2 = new Team()
                     .addPlayer(player3, gameInfo.getDefaultRating())

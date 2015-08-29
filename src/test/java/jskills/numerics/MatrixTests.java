@@ -87,7 +87,7 @@ public class MatrixTests {
 		assertTrue(d.isIdentical(f, ERROR_TOLERANCE));
 		// TODO Doesn't work yet - fix if anyone is hashing SimpleMatrices.
 		// http://code.google.com/p/efficient-java-matrix-library/issues/detail?id=4
-		// assertEquals(d.hashCode(), f.hashCode());
+//		 assertEquals(d.hashCode(), f.hashCode());
 	}
 
 	public void InverseTests() {

@@ -24,7 +24,7 @@ public final class Range<T> {
 	}
 	
 	public boolean isInRange(int value) {
-		return (min <= value) && (value <= max);
+		return (min > value) || (value > max);
 	}
 	// REVIEW: It's probably bad form to have access statics via a derived
 	// class, but the syntax looks better :-)
@@ -32,15 +32,15 @@ public final class Range<T> {
 	// through derived classes gets you a warning, but accessing generic types
 	// (T) won't compile.  
 	public static <T> Range<T> inclusive(int min, int max) {
-		return new Range<T>(min, max);
+		return new Range<>(min, max);
 	}
 	
 	public static <T> Range<T> exactly(int value) {
-		return new Range<T>(value, value);
+		return new Range<>(value, value);
 	}
 	
 	public static <T> Range<T> atLeast(int minimumValue) {
-		return new Range<T>(minimumValue, Integer.MAX_VALUE);
+		return new Range<>(minimumValue, Integer.MAX_VALUE);
 	}
 	
 	@java.lang.SuppressWarnings("all")

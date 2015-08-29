@@ -69,13 +69,13 @@ public abstract class SkillCalculator {
             Range<IPlayer> playersPerTeam) {
         int countOfTeams = 0;
         for (ITeam currentTeam : teams) {
-            if (!playersPerTeam.isInRange(currentTeam.size())) {
+            if (playersPerTeam.isInRange(currentTeam.size())) {
                 throw new IllegalArgumentException();
             }
             countOfTeams++;
         }
 
-        if (!totalTeams.isInRange(countOfTeams)) {
+        if (totalTeams.isInRange(countOfTeams)) {
             throw new IllegalArgumentException();
         }
     }

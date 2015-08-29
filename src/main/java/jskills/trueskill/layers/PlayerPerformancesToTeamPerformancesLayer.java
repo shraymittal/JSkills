@@ -3,6 +3,7 @@ package jskills.trueskill.layers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jskills.IPlayer;
 import jskills.PartialPlay;
@@ -40,10 +41,7 @@ public class PlayerPerformancesToTeamPerformancesLayer extends
     @Override
     public Schedule<GaussianDistribution> createPriorSchedule()
     {
-        Collection<Schedule<GaussianDistribution>> schedules = new ArrayList<>();
-        for (GaussianWeightedSumFactor weightedSumFactor : getLocalFactors()) {
-            schedules.add(new ScheduleStep<>("Perf to Team Perf Step", weightedSumFactor, 0));
-        }
+        Collection<Schedule<GaussianDistribution>> schedules = getLocalFactors().stream().map(weightedSumFactor -> new ScheduleStep<>("Perf to Team Perf Step", weightedSumFactor, 0)).collect(Collectors.toList());
         return scheduleSequence(schedules, "all player perf to team perf schedule");
     }
 

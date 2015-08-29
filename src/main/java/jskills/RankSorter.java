@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +54,7 @@ public class RankSorter {
         for (int i = 0; i < itemsInList.size(); i++)
             itemToRank.put(itemsInList.get(i), itemRanks[i]);
         
-        Collections.sort(itemsInList, new Comparator<T>() {
-            @Override
-            public int compare(T o1, T o2) {
-                return itemToRank.get(o1).compareTo(itemToRank.get(o2));
-            }
-        });
+        Collections.sort(itemsInList, (o1, o2) -> itemToRank.get(o1).compareTo(itemToRank.get(o2)));
         
         Arrays.sort(itemRanks);
         return itemsInList;

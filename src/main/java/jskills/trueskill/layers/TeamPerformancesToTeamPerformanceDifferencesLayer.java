@@ -48,6 +48,6 @@ public class TeamPerformancesToTeamPerformanceDifferencesLayer extends
 
     private Variable<GaussianDistribution> createOutputVariable()
     {
-        return new Variable<GaussianDistribution>(GaussianDistribution.UNIFORM, "Team performance difference");
+        return new Variable<>(GaussianDistribution.UNIFORM, "Team performance difference");
     }
 }

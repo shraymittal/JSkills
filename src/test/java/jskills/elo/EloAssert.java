@@ -18,6 +18,7 @@ import jskills.elo.TwoPlayerEloCalculator;
 public class EloAssert {
     private static final double ErrorTolerance = 0.1;
 
+    @SuppressWarnings("Convert2Diamond")
     public static void assertChessRating(TwoPlayerEloCalculator calculator,
                                          double player1BeforeRating,
                                          double player2BeforeRating,
@@ -25,8 +26,8 @@ public class EloAssert {
                                          double player1AfterRating,
                                          double player2AfterRating)
     {
-        Player<Integer> player1 = new Player<Integer>(1);
-        Player<Integer> player2 = new Player<Integer>(2);
+        Player<Integer> player1 = new Player<>(1);
+        Player<Integer> player2 = new Player<>(2);
 
         Collection<ITeam> teams = Team.concat(
             new Team(player1, new EloRating(player1BeforeRating)),

@@ -118,10 +118,7 @@ public class GaussianWeightedSumFactor extends GaussianFactor
 
         CreateVariableToMessageBinding(sumVariable);
 
-        for(Variable<GaussianDistribution> currentVariable : variablesToSum)
-        {
-            CreateVariableToMessageBinding(currentVariable);
-        }
+        variablesToSum.forEach(this::CreateVariableToMessageBinding);
     }
 
     @Override

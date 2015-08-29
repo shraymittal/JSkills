@@ -41,7 +41,7 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
 
         boolean wasDraw = (teamRanks[0] == teamRanks[1]);
 
-        Map<IPlayer, Rating> results = new HashMap<IPlayer, Rating>();
+        Map<IPlayer, Rating> results = new HashMap<>();
         results.put(winner, CalculateNewRating(gameInfo, winnerPreviousRating, loserPreviousRating,
                                              wasDraw ? PairwiseComparison.DRAW : PairwiseComparison.WIN));
         results.put(loser, CalculateNewRating(gameInfo, loserPreviousRating, winnerPreviousRating,

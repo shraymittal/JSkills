@@ -12,7 +12,7 @@ public class FactorList<TValue> {
 
     public double getLogNormalization() { 
         // TODO can these 3 loops be rolled into 1?
-        for(Factor<TValue> f : factors) f.ResetMarginals();
+        factors.forEach(Factor::ResetMarginals);
 
         double sumLogZ = 0.0;
         for(Factor<TValue> f : factors) {

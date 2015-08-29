@@ -1,6 +1,7 @@
 package jskills.elo;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import jskills.GameInfo;
 import jskills.IPlayer;
@@ -31,8 +32,7 @@ public abstract class TwoPlayerEloCalculator extends SkillCalculator {
         boolean isDraw = (teamRanks[0] == teamRanks[1]);
 
         List<IPlayer> players = new ArrayList<>(2);
-        for(ITeam team : teamsl)
-            players.add(team.keySet().toArray(new IPlayer[1])[0]);
+        players.addAll(teamsl.stream().map(team -> team.keySet().toArray(new IPlayer[1])[0]).collect(Collectors.toList()));
 
         double player1Rating = teamsl.get(0).get(players.get(0)).getMean();
         double player2Rating = teamsl.get(1).get(players.get(1)).getMean();

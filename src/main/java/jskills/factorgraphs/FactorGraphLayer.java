@@ -52,7 +52,7 @@ TOutputVariable extends Variable<TValue>>
 
     @Override
     public Collection<Factor<TValue>> getUntypedFactors() {
-        return new ArrayList<Factor<TValue>>(_LocalFactors);
+        return new ArrayList<>(_LocalFactors);
     }
 
     @Override
