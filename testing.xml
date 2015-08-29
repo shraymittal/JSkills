@@ -1,4 +1,6 @@
-<suite name="All" parallel="true">
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="All" parallel="tests">
   <test name="All">
     <packages>
       <package name="jskills" />
