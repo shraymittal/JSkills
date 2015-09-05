@@ -8,7 +8,7 @@ import jskills.numerics.Range;
 import org.ejml.simple.SimpleMatrix;
 import org.jetbrains.annotations.NotNull;
 
-import static jskills.numerics.MathUtils.square;
+import static java.lang.Math.pow;
 
 /**
  * Calculates TrueSkill using a full factor graph.
@@ -48,7 +48,7 @@ public class FactorGraphTrueSkillCalculator extends SkillCalculator {
 				meanVector.numRows());
 		SimpleMatrix playerTeamAssignmentsMatrixTranspose = playerTeamAssignmentsMatrix.transpose();
 
-		double betaSquared = square(gameInfo.getBeta());
+		double betaSquared = pow(gameInfo.getBeta(), 2);
 
 		SimpleMatrix start = meanVectorTranspose.mult(playerTeamAssignmentsMatrix);
 		SimpleMatrix aTa = playerTeamAssignmentsMatrixTranspose.mult(playerTeamAssignmentsMatrix).scale(betaSquared);

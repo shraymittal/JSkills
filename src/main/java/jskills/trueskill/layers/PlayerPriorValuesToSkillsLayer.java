@@ -15,9 +15,10 @@ import jskills.factorgraphs.Schedule;
 import jskills.factorgraphs.ScheduleStep;
 import jskills.factorgraphs.Variable;
 import jskills.numerics.GaussianDistribution;
-import jskills.numerics.MathUtils;
 import jskills.trueskill.TrueSkillFactorGraph;
 import jskills.trueskill.factors.GaussianPriorFactor;
+
+import static java.lang.Math.pow;
 
 // We intentionally have no Posterior schedule since the only purpose here is to 
 public class PlayerPriorValuesToSkillsLayer extends
@@ -56,8 +57,7 @@ public class PlayerPriorValuesToSkillsLayer extends
     @Override
     public Schedule<GaussianDistribution> createPriorSchedule()
     {
-        @SuppressWarnings("Convert2Diamond") Collection<Schedule<GaussianDistribution>> schedules = getLocalFactors().stream().map(prior -> new ScheduleStep<>("Prior to Skill Step", prior, 0)).collect(Collectors.toList());
-        //noinspection Convert2Diamond
+        Collection<Schedule<GaussianDistribution>> schedules = getLocalFactors().stream().map(prior -> new ScheduleStep<>("Prior to Skill Step", prior, 0)).collect(Collectors.toList());
         return scheduleSequence(schedules, "All priors");
     }
 
@@ -65,8 +65,8 @@ public class PlayerPriorValuesToSkillsLayer extends
                                                   Variable<GaussianDistribution> skillsVariable)
     {
         return new GaussianPriorFactor(priorRating.getMean(),
-                                       MathUtils.square(priorRating.getStandardDeviation()) +
-                                       MathUtils.square(getParentFactorGraph().getGameInfo().getDynamicsFactor()), skillsVariable);
+                                       pow(priorRating.getStandardDeviation(), 2) +
+                                       pow(getParentFactorGraph().getGameInfo().getDynamicsFactor(), 2), skillsVariable);
     }
 
     private KeyedVariable<IPlayer, GaussianDistribution> CreateSkillOutputVariable(IPlayer key)

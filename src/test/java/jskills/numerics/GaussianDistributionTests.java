@@ -2,8 +2,7 @@ package jskills.numerics;
 
 import org.testng.annotations.Test;
 
-import static java.lang.Math.sqrt;
-import static jskills.numerics.MathUtils.square;
+import static java.lang.Math.*;
 import static org.testng.Assert.assertEquals;
 
 @Test
@@ -38,10 +37,10 @@ public class GaussianDistributionTests {
 
         GaussianDistribution product2 = GaussianDistribution.mult(m4s5, m6s7);
 
-        double expectedMean = (4 * square(7) + 6 * square(5)) / (square(5) + square(7));
+        double expectedMean = (4 * pow(7, 2) + 6 * pow(5, 2)) / (pow(5, 2) + pow(7, 2));
         assertEquals(expectedMean, product2.getMean(), ErrorTolerance);
 
-        double expectedSigma = sqrt(((square(5) * square(7)) / (square(5) + square(7))));
+        double expectedSigma = sqrt(((pow(5, 2) * pow(7, 2)) / (pow(5, 2) + pow(7, 2))));
         assertEquals(expectedSigma, product2.getStandardDeviation(), ErrorTolerance);
     }
 
@@ -55,7 +54,7 @@ public class GaussianDistributionTests {
         assertEquals(2.0, productDividedByStandardNormal.getMean(), ErrorTolerance);
         assertEquals(3.0, productDividedByStandardNormal.getStandardDeviation(), ErrorTolerance);
 
-        GaussianDistribution product2 = new GaussianDistribution((4 * square(7) + 6 * square(5)) / (square(5) + square(7)), sqrt(((square(5) * square(7)) / (square(5) + square(7)))));
+        GaussianDistribution product2 = new GaussianDistribution((4 * pow(7, 2) + 6 * pow(5, 2)) / (pow(5, 2) + pow(7, 2)), sqrt(((pow(5, 2) * pow(7, 2)) / (pow(5, 2) + pow(7, 2)))));
         GaussianDistribution m4s5 = new GaussianDistribution(4, 5);
         GaussianDistribution product2DividedByM4S5 = GaussianDistribution.divide(product2, m4s5);
         assertEquals(6.0, product2DividedByM4S5.getMean(), ErrorTolerance);

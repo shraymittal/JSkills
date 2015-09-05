@@ -16,8 +16,9 @@ import jskills.RankSorter;
 import jskills.Rating;
 import jskills.SkillCalculator;
 import jskills.Team;
-import jskills.numerics.MathUtils;
 import jskills.numerics.Range;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.stat.StatUtils;
 
 public class DuellingEloCalculator extends SkillCalculator {
 
@@ -41,15 +42,15 @@ public class DuellingEloCalculator extends SkillCalculator {
         // This implements that algorithm.
 
         validateTeamCountAndPlayersCountPerTeam(teams);
-        List<ITeam> teamsl = RankSorter.sort(teams, teamRanks);
-        ITeam[] teamsList = teamsl.toArray(new ITeam[teamsl.size()]);
+        List<ITeam> teamList = RankSorter.sort(teams, teamRanks);
+        ITeam[] teamsList = teamList.toArray(new ITeam[teamList.size()]);
 
         Map<IPlayer, Map<IPlayer, Double>> deltas = new HashMap<>();
 
         for (int ixCurrentTeam = 0; ixCurrentTeam < teamsList.length; ixCurrentTeam++) {
             for (int ixOtherTeam = 0; ixOtherTeam < teamsList.length; ixOtherTeam++) {
                 if (ixOtherTeam == ixCurrentTeam) {
-                    // Shouldn't duel against ourself ;)
+                    // Shouldn't duel against ourselves ;)
                     continue;
                 }
 
@@ -76,7 +77,9 @@ public class DuellingEloCalculator extends SkillCalculator {
 
         for (ITeam currentTeam : teamsList) {
             for (Entry<IPlayer, Rating> currentTeamPlayerPair : currentTeam.entrySet()) {
-                double currentPlayerAverageDuellingDelta = MathUtils.mean(deltas.get(currentTeamPlayerPair.getKey()).values());
+                Collection<Double> currentTeamPlayerPairCollection = deltas.get(currentTeamPlayerPair.getKey()).values();
+                Double[] currentTeamPlayerDoubleArray = currentTeamPlayerPairCollection.toArray(new Double[currentTeamPlayerPairCollection.size()]);
+                double currentPlayerAverageDuellingDelta = StatUtils.mean(ArrayUtils.toPrimitive(currentTeamPlayerDoubleArray));
                 result.put(currentTeamPlayerPair.getKey(), new EloRating(currentTeamPlayerPair.getValue().getMean() + currentPlayerAverageDuellingDelta));
             }
         }

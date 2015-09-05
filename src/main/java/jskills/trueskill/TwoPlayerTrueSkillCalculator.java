@@ -6,7 +6,7 @@ import jskills.*;
 import jskills.numerics.Range;
 import org.jetbrains.annotations.NotNull;
 
-import static jskills.numerics.MathUtils.square;
+import static java.lang.Math.pow;
 
 /**
  * Calculates the new ratings for only two players.
@@ -58,11 +58,11 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
 
         double c =
             Math.sqrt(
-                square(selfRating.getStandardDeviation())
+                pow(selfRating.getStandardDeviation(), 2)
                 +
-                square(opponentRating.getStandardDeviation())
+                  pow(opponentRating.getStandardDeviation(), 2)
                 +
-                2*square(gameInfo.getBeta()));
+                2*pow(gameInfo.getBeta(), 2));
 
         double winningMean = selfRating.getMean();
         double losingMean = opponentRating.getMean();
@@ -96,10 +96,10 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
             rankMultiplier = 1;
         }
 
-        double meanMultiplier = (square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor()))/c;
+        double meanMultiplier = (pow(selfRating.getStandardDeviation(), 2) + pow(gameInfo.getDynamicsFactor(), 2))/c;
 
-        double varianceWithDynamics = square(selfRating.getStandardDeviation()) + square(gameInfo.getDynamicsFactor());
-        double stdDevMultiplier = varianceWithDynamics/square(c);
+        double varianceWithDynamics = pow(selfRating.getStandardDeviation(), 2) + pow(gameInfo.getDynamicsFactor(), 2);
+        double stdDevMultiplier = varianceWithDynamics/pow(c, 2);
 
         double newMean = selfRating.getMean() + (rankMultiplier*meanMultiplier*v);
         double newStdDev = Math.sqrt(varianceWithDynamics*(1 - w*stdDevMultiplier));
@@ -118,9 +118,9 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
         Rating player2Rating = teamIt.next().values().iterator().next();
 
         // We just use equation 4.1 found on page 8 of the TrueSkill 2006 paper:
-        double betaSquared = square(gameInfo.getBeta());
-        double player1SigmaSquared = square(player1Rating.getStandardDeviation());
-        double player2SigmaSquared = square(player2Rating.getStandardDeviation());
+        double betaSquared = pow(gameInfo.getBeta(), 2);
+        double player1SigmaSquared = pow(player1Rating.getStandardDeviation(), 2);
+        double player2SigmaSquared = pow(player2Rating.getStandardDeviation(), 2);
 
         // This is the square root part of the equation:
         double sqrtPart =
@@ -132,7 +132,7 @@ public class TwoPlayerTrueSkillCalculator extends SkillCalculator
         // This is the exponent part of the equation:
         double expPart =
             Math.exp(
-                (-1*square(player1Rating.getMean() - player2Rating.getMean()))
+                (-1*pow(player1Rating.getMean() - player2Rating.getMean(), 2))
                 /
                 (2*(2*betaSquared + player1SigmaSquared + player2SigmaSquared)));
 

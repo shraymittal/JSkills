@@ -10,9 +10,10 @@ import jskills.factorgraphs.KeyedVariable;
 import jskills.factorgraphs.Schedule;
 import jskills.factorgraphs.ScheduleStep;
 import jskills.numerics.GaussianDistribution;
-import jskills.numerics.MathUtils;
 import jskills.trueskill.TrueSkillFactorGraph;
 import jskills.trueskill.factors.GaussianLikelihoodFactor;
+
+import static java.lang.Math.pow;
 
 public class PlayerSkillsToPerformancesLayer extends
     TrueSkillFactorGraphLayer<KeyedVariable<IPlayer, GaussianDistribution>, 
@@ -46,7 +47,7 @@ public class PlayerSkillsToPerformancesLayer extends
     private GaussianLikelihoodFactor CreateLikelihood(KeyedVariable<IPlayer, GaussianDistribution> playerSkill,
                                                       KeyedVariable<IPlayer, GaussianDistribution> playerPerformance)
     {
-        return new GaussianLikelihoodFactor(MathUtils.square(parentFactorGraph.getGameInfo().getBeta()), playerPerformance, playerSkill);
+        return new GaussianLikelihoodFactor(pow(parentFactorGraph.getGameInfo().getBeta(), 2), playerPerformance, playerSkill);
     }
 
     private KeyedVariable<IPlayer, GaussianDistribution> CreateOutputVariable(IPlayer key)

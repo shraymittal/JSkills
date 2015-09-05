@@ -7,7 +7,7 @@ import jskills.*;
 import jskills.numerics.Range;
 import org.jetbrains.annotations.NotNull;
 
-import static jskills.numerics.MathUtils.square;
+import static java.lang.Math.pow;
 
 /**
  * Calculates new ratings for only two teams where each team has 1 or more players.
@@ -60,8 +60,8 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
                                             PairwiseComparison selfToOtherTeamComparison)
     {
         double drawMargin = DrawMargin.getDrawMarginFromDrawProbability(gameInfo.getDrawProbability(), gameInfo.getBeta());
-        double betaSquared = square(gameInfo.getBeta());
-        double tauSquared = square(gameInfo.getDynamicsFactor());
+        double betaSquared = pow(gameInfo.getBeta(), 2);
+        double tauSquared = pow(gameInfo.getDynamicsFactor(), 2);
 
         int totalPlayers = selfTeam.size() + otherTeam.size();
 
@@ -71,8 +71,8 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
         for (Rating r : otherTeam.values()) otherTeamMeanSum += r.getMean();
 
         double sum = 0;
-        for (Rating r : selfTeam.values()) sum += square(r.getStandardDeviation());
-        for (Rating r : otherTeam.values()) sum += square(r.getStandardDeviation());
+        for (Rating r : selfTeam.values()) sum += pow(r.getStandardDeviation(), 2);
+        for (Rating r : otherTeam.values()) sum += pow(r.getStandardDeviation(), 2);
         
         double c = Math.sqrt(sum + totalPlayers*betaSquared);
 
@@ -113,14 +113,14 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
         {
             Rating previousPlayerRating = teamPlayerRatingPair.getValue();
 
-            double meanMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared)/c;
-            double stdDevMultiplier = (square(previousPlayerRating.getStandardDeviation()) + tauSquared)/square(c);
+            double meanMultiplier = (pow(previousPlayerRating.getStandardDeviation(), 2) + tauSquared)/c;
+            double stdDevMultiplier = (pow(previousPlayerRating.getStandardDeviation(), 2) + tauSquared)/pow(c, 2);
 
             double playerMeanDelta = (rankMultiplier*meanMultiplier*v);
             double newMean = previousPlayerRating.getMean() + playerMeanDelta;
 
             double newStdDev =
-                Math.sqrt((square(previousPlayerRating.getStandardDeviation()) + tauSquared)*(1 - w*stdDevMultiplier));
+                Math.sqrt((pow(previousPlayerRating.getStandardDeviation(), 2) + tauSquared)*(1 - w*stdDevMultiplier));
 
             newPlayerRatings.put(teamPlayerRatingPair.getKey(), new Rating(newMean, newStdDev));
         }
@@ -142,17 +142,17 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
 
         int totalPlayers = team1Count + team2Count;
 
-        double betaSquared = square(gameInfo.getBeta());
+        double betaSquared = pow(gameInfo.getBeta(), 2);
 
         double team1MeanSum = 0;
         for (Rating r : team1) team1MeanSum += r.getMean();
         double team1StdDevSquared = 0;
-        for (Rating r : team1) team1StdDevSquared += square(r.getStandardDeviation());
+        for (Rating r : team1) team1StdDevSquared += pow(r.getStandardDeviation(), 2);
 
         double team2MeanSum = 0;
         for (Rating r : team2) team2MeanSum += r.getMean();
         double team2SigmaSquared = 0;
-        for (Rating r : team2) team2SigmaSquared += square(r.getStandardDeviation());
+        for (Rating r : team2) team2SigmaSquared += pow(r.getStandardDeviation(), 2);
 
         // This comes from equation 4.1 in the TrueSkill paper on page 8            
         // The equation was broken up into the part under the square root sign and 
@@ -167,7 +167,7 @@ public class TwoTeamTrueSkillCalculator extends SkillCalculator
 
         double expPart
             = Math.exp(
-                (-1*square(team1MeanSum - team2MeanSum))
+                (-1*pow(team1MeanSum - team2MeanSum, 2))
                 /
                 (2*(totalPlayers*betaSquared + team1StdDevSquared + team2SigmaSquared))
                 );
