@@ -1,3 +1,6 @@
+build/
+gradle/wrapper/dists/
+.gradle/
 lib
 bin
 deploy
